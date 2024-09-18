@@ -6,8 +6,10 @@ public class Main {
         myList.add(2);
         myCars.add("Chevy HHR");
         myCars.add("Honda Van");
+        myCars.add(1, "Toyota 4Runner");
         System.out.println(myList.get(0));
         System.out.println(myCars.get(1));
+        System.out.println(myCars.get(2));
     }
 }
 
@@ -37,12 +39,34 @@ class CustomList<T> {
         this.size++;
     }
 
-
+    /**
+     * Adds or inserts an element at the desired position, it will increase the capacity and size
+     * of the array.
+     * @param index the index at whic to insert the new element
+     * @param element the element to insert
+     * @return void
+     */
     public void add(int index, T element) {
+        checkIndex(index);
+        if(this.size == this.capacity) {
+            this.resize();
+        }
 
+        for (int i = this.size-1; i >= index; i--) {
+            this.data[i+1] = this.data[i];
+        }
+        this.data[index] = element;
+        this.size++;
+    }
+    public void insert(int index, T element) {
+        this.add(index, element);
     }
 
-
+    private void checkIndex(int index) {
+        if(index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
+        }
+    }
     public T get(int index) {
         if(index < 0 || index >= this.size) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
