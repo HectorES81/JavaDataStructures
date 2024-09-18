@@ -27,7 +27,12 @@ class CustomList<T> {
         } else {
             this.capacity = capacity;
         }
-        this.data = (T[]) new Object[this.capacity];
+        try {
+            this.data = (T[]) new Object[this.capacity];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.size = 0;
     }
 
