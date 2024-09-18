@@ -12,7 +12,7 @@ public class Main {
         System.out.println(myCars.get(2));
     }
 }
-
+@SuppressWarnings("unchecked")
 class CustomList<T> {
     private T[] data;
     private int size;
@@ -27,11 +27,9 @@ class CustomList<T> {
         } else {
             this.capacity = capacity;
         }
-        try {
-            this.data = (T[]) new Object[this.capacity];
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        this.data = (T[]) new Object[this.capacity];
+
 
         this.size = 0;
     }
