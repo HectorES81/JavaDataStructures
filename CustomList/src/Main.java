@@ -47,7 +47,7 @@ class CustomList<T> {
      * of the array.
      * @param index the index at whic to insert the new element
      * @param element the element to insert
-     * @return void
+     *
      */
     public void add(int index, T element) {
         checkIndex(index);
@@ -92,9 +92,7 @@ class CustomList<T> {
     public void resize() {
         this.capacity *= 2;
         T[] newData = (T[]) new Object[this.capacity];
-        for (int i = 0; i < this.size; i++) {
-            newData[i] = this.data[i];
-        }
+        System.arraycopy(this.data, 0, newData, 0, this.size);
         this.data = newData;
     }
 }
