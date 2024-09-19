@@ -1,14 +1,22 @@
+import java.lang.reflect.Array;
+import java.util.Random;
+
 public class Main {
     public static void main(String[]args){
-        CustomList<Integer> myList = new CustomList<>();
-        CustomList<String> myCars = new CustomList<>(2);
-        CustomList<Integer> emptyList = new CustomList<>();
+        CustomList<Integer> myList = new CustomList<>(Integer.class);
+        CustomList<String> myCars = new CustomList<String>(String.class, 2);
+        CustomList<Integer> emptyList = new CustomList<>(Integer.class);
+        CustomList<Integer> tenThousandInts = new CustomList<>(Integer.class);
+        for (int i = 0; i <= 10000 ; i++) {
+            tenThousandInts.add((int) (Math.random() * i));
+        }
 
         myList.add(2);
         myCars.add("Chevy HHR");
         myCars.add("Honda Van");
         myCars.add(1, "Toyota 4Runner");
         myCars.set(0, "Ford Ranger");
+
         System.out.println(myList.get(0));
         System.out.println(myCars.get(0));
         System.out.println(myCars.get(1));
@@ -17,27 +25,33 @@ public class Main {
         System.out.println(myCars.get(1));
         System.out.println(emptyList.isEmpty());
         System.out.println(myCars.contains("Honda Va"));
+        System.out.println(myCars);
+
+        tenThousandInts.insert(5, 50);
+        System.out.println(tenThousandInts);
+        tenThousandInts.insertionSort();
+        System.out.println(tenThousandInts);
     }
 }
 @SuppressWarnings("unchecked")
-class CustomList<T> {
+class CustomList<T extends Comparable<T>> {
     private T[] data;
     private int size;
     private int capacity;
+    private Class<T> type;
 
-    public CustomList() {
-        this(10);
+    public CustomList(Class<T> type) {
+        this(type,10);
     }
-    public CustomList(int capacity) {
+    public CustomList(Class<T> type, int capacity) {
+        this.type = type;
         if (capacity <= 0) {
             this.capacity = 10;
         } else {
             this.capacity = capacity;
         }
 
-        this.data = (T[]) new Object[this.capacity];
-
-
+        this.data = (T[]) Array.newInstance(type, this.capacity);
         this.size = 0;
     }
 
@@ -132,6 +146,19 @@ class CustomList<T> {
         }
         return false;
     }
+
+    public void insertionSort() {
+        for (int i = 1; i < this.size; i++) {
+            T keyElem = this.data[i];
+            int j = i -1;
+
+            while (j >=0 && this.data[j].compareTo(keyElem) > 0) {
+                this.data[j+1] =this.data[j];
+                j--;
+            }
+            this.data[j + 1] = keyElem;
+        }
+    }
     /*
     indexOf(T element)
     clear()
@@ -141,8 +168,22 @@ class CustomList<T> {
     */
     public void resize() {
         this.capacity *= 2;
-        T[] newData = (T[]) new Object[this.capacity];
+        T[] newData = (T[]) Array.newInstance(type, this.capacity);
         System.arraycopy(this.data, 0, newData, 0, this.size);
         this.data = newData;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+
+        for (int i = 0; i < this.size; i++) {
+            sb.append(this.data[i]);
+            if (i < this.size - 1){
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
