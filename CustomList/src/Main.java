@@ -7,7 +7,9 @@ public class Main {
         myCars.add("Chevy HHR");
         myCars.add("Honda Van");
         myCars.add(1, "Toyota 4Runner");
+        myCars.set(0, "Ford Ranger");
         System.out.println(myList.get(0));
+        System.out.println(myCars.get(0));
         System.out.println(myCars.get(1));
         System.out.println(myCars.get(2));
     }
@@ -77,8 +79,17 @@ class CustomList<T> {
         return this.data[index];
     }
 
-    /*
-    set(int index, T element)
+    /**
+     * Sets the value at an index, replacing the existing value
+     *
+     * @param index index of element to set
+     * @param element the value of the element to set
+     */
+    public void set(int index, T element) {
+        checkIndex(index);
+        this.data[index] = element;
+    }
+        /*
     remove(int index)
     size()
     isEmpty()
