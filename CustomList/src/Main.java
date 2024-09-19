@@ -2,6 +2,7 @@ public class Main {
     public static void main(String[]args){
         CustomList<Integer> myList = new CustomList<>();
         CustomList<String> myCars = new CustomList<>(2);
+        CustomList<Integer> emptyList = new CustomList<>();
 
         myList.add(2);
         myCars.add("Chevy HHR");
@@ -12,6 +13,10 @@ public class Main {
         System.out.println(myCars.get(0));
         System.out.println(myCars.get(1));
         System.out.println(myCars.get(2));
+        myCars.remove(0);
+        System.out.println(myCars.get(1));
+        System.out.println(emptyList.isEmpty());
+        System.out.println(myCars.contains("Honda Va"));
     }
 }
 @SuppressWarnings("unchecked")
@@ -89,11 +94,45 @@ class CustomList<T> {
         checkIndex(index);
         this.data[index] = element;
     }
-        /*
-    remove(int index)
-    size()
-    isEmpty()
-    contains(T element)
+
+    /**
+     * Removes an element at that index and shifts all the elements down.
+     * List size is decreased by one
+     *
+     * @param index the index of the element to remove
+     */
+    public void remove(int index) {
+        checkIndex(index);
+        for (int i = index; i < this.size -1; i++) {
+            this.data[i] = this.data[i+1];
+        }
+        this.data[this.size - 1] = null;
+        this.size--;
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return (this.size == 0);
+    }
+
+    public boolean contains(T element) {
+        for (int i = 0; i < this.size; i++) {
+            if (element == null) {
+                if ( this.data[i] == null) {
+                    return true;
+                }
+            } else {
+                if(element.equals(this.data[i])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    /*
     indexOf(T element)
     clear()
     toArray()
